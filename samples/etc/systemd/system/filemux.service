@@ -1,0 +1,12 @@
+[Unit]
+Description=Filemux service
+
+[Service]
+Type=notify
+User=filemux
+Group=filemux
+ExecStart=/usr/local/bin/filemux run -c /usr/local/etc/filemux.yml
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

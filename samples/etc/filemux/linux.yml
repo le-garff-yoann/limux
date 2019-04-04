@@ -1,0 +1,15 @@
+---
+out:
+  - interval: 5s
+    src: /tmp/data/A/*/out
+    dst: /tmp/intf/A/out
+    archive_basename: A_{{ .Now.UnixNano }}_0
+    archive_inner_dirname: "{{ index .SrcFragments 4 }}/in"
+    exec:
+      - bash
+      - -c
+      - mv {{ .ArchiveFullPath }} /tmp/intf/A/in
+
+in:
+  - src: /tmp/intf/A/in
+    dst: /tmp/data/A

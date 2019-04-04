@@ -1,0 +1,8 @@
+/var/log/filemux.log {
+    size 100M
+    rotate 30
+    compress
+    copytruncate
+    notifempty
+    missingok
+}

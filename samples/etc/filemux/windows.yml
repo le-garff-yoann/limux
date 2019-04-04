@@ -1,0 +1,15 @@
+---
+out:
+  - interval: 1s
+    src: C:\temp\data\A\*\out
+    dst: C:\temp\intf\A\out
+    archive_basename: A_{{ .Now.UnixNano }}_0
+    archive_inner_dirname: "{{ index .SrcFragments 4 }}\\in"
+    exec:
+      - cmd.exe
+      - /C
+      - move {{ .ArchiveFullPath }} C:\temp\intf\A\in
+
+in:
+  - src: C:\temp\intf\A\in
+    dst: C:\temp\data\A

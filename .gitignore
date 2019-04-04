@@ -1,0 +1,4 @@
+t_filemux*
+/dist
+Vagrantfile
+.vagrant/
