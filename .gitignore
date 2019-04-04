@@ -1,0 +1,4 @@
+t_limux*
+/dist
+Vagrantfile
+.vagrant/

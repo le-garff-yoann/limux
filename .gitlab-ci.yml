@@ -1,0 +1,68 @@
+---
+stages:
+  - test
+  - build
+
+image: golang:1.11.5
+
+go:test:
+  stage: test
+  tags:
+    - linux
+    - docker
+  before_script:
+    - cd $GOPATH/src
+    - ln -s $CI_PROJECT_DIR limux
+    - cd $CI_PROJECT_NAME
+  script:
+    - go test ./...
+
+vue:test:
+  stage: test
+  tags:
+    - linux
+    - docker
+  image: node:11.13
+  before_script:
+    - cd vue/limux/
+  script:
+    - npm install
+    - npm test
+
+go:build:
+  stage: build
+  tags:
+    - linux
+    - docker
+  before_script:
+    - cd $GOPATH/src
+    - ln -s $CI_PROJECT_DIR limux
+    - cd $CI_PROJECT_NAME
+  script:
+    - CGO_ENABLED=0 GOOS=linux go build -o dist/linux/limux
+    - CGO_ENABLED=0 GOOS=windows go build -o dist/windows/limux.exe
+  artifacts:
+    name: limux-${CI_COMMIT_REF_NAME}
+    paths:
+      - dist/
+  dependencies:
+    - go:test
+
+vue:build:
+  stage: build
+  tags:
+    - linux
+    - docker
+  image: node:11.13
+  before_script:
+    - cd vue/limux/
+  script:
+    - npm install
+    - npm run build
+  artifacts:
+    name: limux-vue-${CI_COMMIT_REF_NAME}
+    paths:
+      - vue/limux/dist/
+      - vue/limux/index.html
+  dependencies:
+    - vue:test
